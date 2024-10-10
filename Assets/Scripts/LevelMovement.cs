@@ -24,7 +24,7 @@ public class LevelMovement : MonoBehaviour
 
         targetRotation.x = -moveVector.y * maxTiltAngle;
         targetRotation.z = moveVector.x * maxTiltAngle;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRotation), Time.deltaTime * tiltSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(-targetRotation), Time.deltaTime * tiltSpeed);
     }
     private void FixedUpdate()
     {

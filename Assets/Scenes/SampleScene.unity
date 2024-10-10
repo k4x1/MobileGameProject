@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 144930447}
   - component: {fileID: 144930446}
   - component: {fileID: 144930445}
+  - component: {fileID: 144930450}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -402,6 +403,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144930450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144930444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3dd69e47e558642baf51f4f4beff00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastDistance: 4
+  floorLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  offsetFromFloor: 2
 --- !u!1 &147815723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,7 +2455,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!114 &1792031516
 MonoBehaviour:
