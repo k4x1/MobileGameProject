@@ -6,7 +6,7 @@
             "id": "b3f59bce-f2bf-4983-a44b-59917dcc0ecf",
             "actions": [
                 {
-                    "name": "Input",
+                    "name": "Joystick",
                     "type": "Value",
                     "id": "137ad452-45ab-4286-b788-04c9e6dd39b2",
                     "expectedControlType": "Vector2",
@@ -23,7 +23,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Input",
+                    "action": "Joystick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

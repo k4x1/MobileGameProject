@@ -1,21 +1,20 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class LevelMovement : MonoBehaviour
 {
-    Vector2 moveVector;
-    [SerializeField] float rotationSpeed = 60f;
-    [SerializeField] float maxRotationAngle = 30f;
+    [SerializeField] private float rotationSpeed = 60f;
+    [SerializeField] private float maxRotationAngle = 30f;
+    [SerializeField] private InputMode inputMode = InputMode.JOYSTICK;
 
-    public void InputPlayer(InputAction.CallbackContext context)
+    private void Start()
     {
-        moveVector = context.ReadValue<Vector2>();
+        InputManager.Instance.SetInputMode(inputMode);
     }
 
-    void Update()
+    private void Update()
     {
+        Vector2 moveVector = InputManager.Instance.MovementVector;
         Vector3 rotation = transform.rotation.eulerAngles;
-
 
         rotation.x -= moveVector.y * rotationSpeed * Time.deltaTime;
         rotation.z += moveVector.x * rotationSpeed * Time.deltaTime;
@@ -27,5 +26,19 @@ public class LevelMovement : MonoBehaviour
         rotation.z = Mathf.Clamp(rotation.z, -maxRotationAngle, maxRotationAngle);
 
         transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    public void SetInputMode(InputMode mode)
+    {
+        inputMode = mode;
+        InputManager.Instance.SetInputMode(mode);
+    }
+
+    public void ResetGyroscope()
+    {
+        if (inputMode == InputMode.GYROSCOPE)
+        {
+            InputManager.Instance.ResetGyroscope();
+        }
     }
 }

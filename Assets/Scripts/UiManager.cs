@@ -2,19 +2,18 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-enum InputMode
+public enum InputMode
 {
     JOYSTICK,
+    RELATIVE_TOUCH,
+    GYROSCOPE
 }
+
+
 public class UiManager : MonoBehaviour
 {
-
     public static UiManager Instance { get; private set; }
 
-    private void Start()
-    {
-      
-    }
     private void Awake()
     {
         if (Instance == null)
@@ -28,5 +27,13 @@ public class UiManager : MonoBehaviour
         }
     }
 
- 
+    public void SwitchInputMode(InputMode mode)
+    {
+        InputManager.Instance.SetInputMode(mode);
+    }
+
+    public void ResetGyroscope()
+    {
+        InputManager.Instance.ResetGyroscope();
+    }
 }
