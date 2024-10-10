@@ -57,8 +57,22 @@ public class InputManager : MonoBehaviour
             }
             else if (touch.phase == UnityEngine.TouchPhase.Moved || touch.phase == UnityEngine.TouchPhase.Stationary)
             {
-                Vector2 touchDelta = (touch.position - touchStartPosition) / Screen.height;
-                MovementVector = Vector2.ClampMagnitude(touchDelta, 1f);
+                Vector2 touchDelta = touch.position - touchStartPosition;
+
+                // Determine the smaller dimension of the screen
+                float minScreenDimension = Mathf.Min(Screen.width, Screen.height);
+
+                // Scale the touch delta by the smaller screen dimension
+                Vector2 scaledDelta = new Vector2(
+                    touchDelta.x / (minScreenDimension * 0.5f),
+                    touchDelta.y / (minScreenDimension * 0.5f)
+                );
+
+                // Clamp each component individually to [-1, 1]
+                scaledDelta.x = Mathf.Clamp(scaledDelta.x, -1f, 1f);
+                scaledDelta.y = Mathf.Clamp(scaledDelta.y, -1f, 1f);
+
+                MovementVector = scaledDelta;
             }
             else if (touch.phase == UnityEngine.TouchPhase.Ended || touch.phase == UnityEngine.TouchPhase.Canceled)
             {
@@ -71,6 +85,7 @@ public class InputManager : MonoBehaviour
             MovementVector = Vector2.zero;
         }
     }
+
     private void InitializeGyroscope()
     {
         if (SystemInfo.supportsGyroscope)

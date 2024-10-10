@@ -14,6 +14,7 @@ public class LevelMovement : MonoBehaviour
     private void Update()
     {
         Vector2 moveVector = InputManager.Instance.MovementVector;
+
         Vector3 rotation = transform.rotation.eulerAngles;
 
         rotation.x -= moveVector.y * rotationSpeed * Time.deltaTime;
