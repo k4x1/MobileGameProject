@@ -2,31 +2,37 @@ using UnityEngine;
 
 public class LevelMovement : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 60f;
-    [SerializeField] private float maxRotationAngle = 30f;
+    [SerializeField] private float tiltSpeed = 5f;
+    [SerializeField] private float maxTiltAngle = 30f;
     [SerializeField] private InputMode inputMode = InputMode.JOYSTICK;
-
+    [SerializeField] private Rigidbody ballRigidbody;
+    private Vector3 targetRotation;
     private void Start()
     {
+
+        ballRigidbody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
         InputManager.Instance.SetInputMode(inputMode);
+        if (ballRigidbody == null)
+        {
+            Debug.LogError("Ball Rigidbody not assigned!");
+        }
     }
 
     private void Update()
     {
         Vector2 moveVector = InputManager.Instance.MovementVector;
 
-        Vector3 rotation = transform.rotation.eulerAngles;
-
-        rotation.x -= moveVector.y * rotationSpeed * Time.deltaTime;
-        rotation.z += moveVector.x * rotationSpeed * Time.deltaTime;
-
-        if (rotation.x > 180f) rotation.x -= 360f;
-        rotation.x = Mathf.Clamp(rotation.x, -maxRotationAngle, maxRotationAngle);
-
-        if (rotation.z > 180f) rotation.z -= 360f;
-        rotation.z = Mathf.Clamp(rotation.z, -maxRotationAngle, maxRotationAngle);
-
-        transform.rotation = Quaternion.Euler(rotation);
+        targetRotation.x = -moveVector.y * maxTiltAngle;
+        targetRotation.z = moveVector.x * maxTiltAngle;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRotation), Time.deltaTime * tiltSpeed);
+    }
+    private void FixedUpdate()
+    {
+        if (ballRigidbody != null)
+        {
+            Vector3 tiltDirection = new Vector3(targetRotation.z, 0, -targetRotation.x).normalized;
+            ballRigidbody.AddForce(tiltDirection * Physics.gravity.magnitude, ForceMode.Acceleration);
+        }
     }
 
     public void SetInputMode(InputMode mode)
