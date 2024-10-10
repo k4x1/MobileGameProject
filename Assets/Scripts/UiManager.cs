@@ -37,12 +37,12 @@ public class UiManager : MonoBehaviour
         if (InputMode.GYROSCOPE == mode)
         {
             resetGyroButton.SetActive(true);
-            resetGyroButton.GetComponent<Button>().onClick.AddListener(ResetGyroscope);
+            resetGyroButton.GetComponentInChildren<Button>().onClick.AddListener(ResetGyroscope);
         }
         else
         {
             resetGyroButton.SetActive(false);
-            resetGyroButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            resetGyroButton.GetComponentInChildren<Button>().onClick.RemoveAllListeners();
         }
         InputManager.Instance.SetInputMode(mode);
     }
