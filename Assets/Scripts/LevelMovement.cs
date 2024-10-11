@@ -7,12 +7,14 @@ public class LevelMovement : MonoBehaviour
     [SerializeField] private InputMode inputMode = InputMode.JOYSTICK;
     [SerializeField] private Rigidbody ballRigidbody;
     [SerializeField] private float maxVelocityMagnitude = 10f;
-    [SerializeField] private float surfaceOffset = 0.5f; 
+    [SerializeField] private float surfaceOffset = 0.5f;
+    [SerializeField] private float raycastDistance = 1f;
+    [SerializeField] private LayerMask surfaceLayer;
 
     private Vector3 targetRotation;
     private Vector3 previousPosition;
     private Rigidbody levelRigidbody;
-
+    private bool isOnSurface = true;
     private void Start()
     {
         levelRigidbody = GetComponent<Rigidbody>();
@@ -49,25 +51,57 @@ public class LevelMovement : MonoBehaviour
 
         if (ballRigidbody != null)
         {
-            Vector3 levelMovement = transform.position - previousPosition;
-            previousPosition = transform.position;
+            CheckSurface();
 
-            Vector3 projectedPosition = ProjectPointOnPlane(ballRigidbody.position, transform.position, transform.up);
-            Vector3 surfacePoint = projectedPosition + transform.up * surfaceOffset;
-
-            Vector3 newPosition = surfacePoint + levelMovement;
-            ballRigidbody.MovePosition(newPosition);
-
-            Vector3 tiltDirection = new Vector3(targetRotation.z, 0, -targetRotation.x).normalized;
-            ballRigidbody.AddForce(tiltDirection * Physics.gravity.magnitude, ForceMode.Acceleration);
-
-            if (ballRigidbody.velocity.magnitude > maxVelocityMagnitude)
+            if (isOnSurface)
             {
-                ballRigidbody.velocity = ballRigidbody.velocity.normalized * maxVelocityMagnitude;
+                ApplyCustomMovement();
+            }
+            else
+            {
+                ApplyFallingMovement();
             }
         }
     }
 
+    private void CheckSurface()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(ballRigidbody.position, -transform.up, out hit, raycastDistance, surfaceLayer))
+        {
+            isOnSurface = true;
+        }
+        else
+        {
+            isOnSurface = false;
+        }
+    }
+
+    private void ApplyCustomMovement()
+    {
+        Vector3 levelMovement = transform.position - previousPosition;
+        previousPosition = transform.position;
+
+        Vector3 projectedPosition = ProjectPointOnPlane(ballRigidbody.position, transform.position, transform.up);
+        Vector3 surfacePoint = projectedPosition + transform.up * surfaceOffset;
+
+        Vector3 newPosition = surfacePoint + levelMovement;
+        ballRigidbody.MovePosition(newPosition);
+
+        Vector3 tiltDirection = new Vector3(targetRotation.z, 0, -targetRotation.x).normalized;
+        ballRigidbody.AddForce(tiltDirection * Physics.gravity.magnitude, ForceMode.Acceleration);
+
+        if (ballRigidbody.velocity.magnitude > maxVelocityMagnitude)
+        {
+            ballRigidbody.velocity = ballRigidbody.velocity.normalized * maxVelocityMagnitude;
+        }
+    }
+
+    private void ApplyFallingMovement()
+    {
+        // Let Unity's physics handle the falling
+        ballRigidbody.AddForce(Physics.gravity, ForceMode.Acceleration);
+    }
     private Vector3 ProjectPointOnPlane(Vector3 point, Vector3 planePosition, Vector3 planeNormal)
     {
         return point - Vector3.Dot(point - planePosition, planeNormal) * planeNormal;
@@ -84,5 +118,10 @@ public class LevelMovement : MonoBehaviour
         {
             InputManager.Instance.ResetGyroscope();
         }
+    }
+    public void ResetOrientation()
+    {
+        targetRotation = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,16 +23,23 @@ public class LevelGenerator : MonoBehaviour
     }
      void Update()
     {
+        
         if (GameManager.Instance.won && currentLevel< levels.Length-1) {
             foreach (Transform child in transform)
             {
                 Destroy(child.gameObject);
             }
-            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 0, 0);
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 1, 0);
             currentLevel++;
             map = levels[currentLevel];
+            GetComponent<LevelMovement>().ResetOrientation();
             GenerateLevel();
             GameManager.Instance.won = false;
+        }
+        if(GameManager.Instance.reset)
+        {
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 1, 0);   
+            GameManager.Instance.reset = false;
         }
     }
     void GenerateLevel() {

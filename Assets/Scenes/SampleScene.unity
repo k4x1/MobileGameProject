@@ -410,16 +410,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144930444}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d3dd69e47e558642baf51f4f4beff00, type: 3}
+  m_Script: {fileID: 11500000, guid: 11fb2eeb70fe2e5419de2897ed37354a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastDistance: 4
-  floorLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  offsetFromFloor: 2
 --- !u!1 &147815723
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   won: 0
+  reset: 0
 --- !u!1 &315724351
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,6 +2428,10 @@ MonoBehaviour:
   ballRigidbody: {fileID: 0}
   maxVelocityMagnitude: 10
   surfaceOffset: 0.5
+  raycastDistance: 1
+  surfaceLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!54 &1792031515
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2589,6 +2589,7 @@ GameObject:
   - component: {fileID: 1869015037}
   - component: {fileID: 1869015036}
   - component: {fileID: 1869015035}
+  - component: {fileID: 1869015038}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -2610,10 +2611,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1772355803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.048, y: 0.9305}
-  m_AnchorMax: {x: 0.141, y: 0.9755}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1869015035
 MonoBehaviour:
@@ -2697,6 +2698,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869015033}
   m_CullTransparentMesh: 1
+--- !u!114 &1869015038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869015033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade8bbef42b733b4395cef9e381dc475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseButton: {fileID: 1869015034}
+  offsetX: 20
+  offsetY: 20
 --- !u!1 &1906741489
 GameObject:
   m_ObjectHideFlags: 0
