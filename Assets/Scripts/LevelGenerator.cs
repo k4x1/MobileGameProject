@@ -7,6 +7,8 @@ public class LevelGenerator : MonoBehaviour
     public ColorToPrefab[] colorMappings;
     public Texture2D[] levels;
     int currentLevel = 0;
+    [SerializeField] float scale = 1.0f;
+    Vector2 offset = new Vector2(16,16);
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,7 @@ public class LevelGenerator : MonoBehaviour
             Destroy(child.gameObject);
         }
         GenerateLevel();
+  
     }
      void Update()
     {
@@ -32,8 +35,9 @@ public class LevelGenerator : MonoBehaviour
         }
     }
     void GenerateLevel() {
- 
-        for(int x = 0 ; x < map.width; x++)
+        offset = new Vector2(map.width/2, map.height/2);
+        offset*=scale;
+        for (int x = 0 ; x < map.width; x++)
         {
             for (int y = 0; y < map.height; y++)
             {
@@ -51,8 +55,9 @@ public class LevelGenerator : MonoBehaviour
         
         foreach (ColorToPrefab colorMapping in colorMappings) {
             if (colorMapping.color.Equals(pixColor)) {
-                Vector3 position = new Vector3(x-16,0, y-16);
+                Vector3 position = new Vector3((x*scale) - offset.x, 0, (y*scale) - offset.y);
                 var inst = Instantiate(colorMapping.prefab, position, Quaternion.identity, transform);
+                inst.transform.localScale*=scale;
             }
         }
 
