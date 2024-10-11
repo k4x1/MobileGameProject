@@ -21,7 +21,9 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        CheckPaused();
+        if (GameManager.Instance.gameStarted) { 
+            CheckPaused();
+        }
     }
 
     private void CheckPaused()

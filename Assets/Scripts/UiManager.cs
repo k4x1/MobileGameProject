@@ -22,17 +22,20 @@ public class UiManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+          /*  DontDestroyOnLoad(gameObject);*/
         }
         else
         {
             Destroy(gameObject);
         }
     }
-
+    private void Start()
+    {
+        SwitchInputMode(InputManager.Instance.CurrentInputMode);
+    }
     public void SwitchInputMode(InputMode mode)
     {
-     
+        Debug.Log("switched");
         joystick.SetActive(InputMode.JOYSTICK == mode);
         if (InputMode.GYROSCOPE == mode)
         {

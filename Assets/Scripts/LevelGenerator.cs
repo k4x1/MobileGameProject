@@ -30,6 +30,7 @@ public class LevelGenerator : MonoBehaviour
                 Destroy(child.gameObject);
             }
             GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 1, 0);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().velocity = Vector3.zero;
             currentLevel++;
             map = levels[currentLevel];
             GetComponent<LevelMovement>().ResetOrientation();
@@ -38,6 +39,7 @@ public class LevelGenerator : MonoBehaviour
         }
         if(GameManager.Instance.reset)
         {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().velocity = Vector3.zero;
             GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 1, 0);   
             GameManager.Instance.reset = false;
         }

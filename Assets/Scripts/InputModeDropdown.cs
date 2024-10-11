@@ -42,9 +42,13 @@ public class InputModeDropdown : MonoBehaviour
     private void OnInputModeChanged(int index)
     {
         InputMode newMode = (InputMode)index;
-  
-        UiManager.Instance.SwitchInputMode(newMode);
-
+        if (GameManager.Instance.gameStarted)
+        {
+            UiManager.Instance.SwitchInputMode(newMode);
+        }
+        else { 
+            InputManager.Instance.SetInputMode(newMode);
+        }
         UpdateResetGyroscopeButtonVisibility();
     }
 

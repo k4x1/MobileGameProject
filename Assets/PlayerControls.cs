@@ -35,6 +35,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Gyro"",
+                    ""type"": ""Value"",
+                    ""id"": ""4a79b4c4-47a6-4e38-bd51-c9ad0379dd2f"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -48,6 +57,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Joystick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1246af5c-d5a9-4257-9037-c9eab8dea4ec"",
+                    ""path"": ""<Gyroscope>/angularVelocity"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gyro"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +77,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Joystick = m_Movement.FindAction("Joystick", throwIfNotFound: true);
+        m_Movement_Gyro = m_Movement.FindAction("Gyro", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -119,11 +140,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_Joystick;
+    private readonly InputAction m_Movement_Gyro;
     public struct MovementActions
     {
         private @PlayerControls m_Wrapper;
         public MovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Joystick => m_Wrapper.m_Movement_Joystick;
+        public InputAction @Gyro => m_Wrapper.m_Movement_Gyro;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -136,6 +159,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Joystick.started += instance.OnJoystick;
             @Joystick.performed += instance.OnJoystick;
             @Joystick.canceled += instance.OnJoystick;
+            @Gyro.started += instance.OnGyro;
+            @Gyro.performed += instance.OnGyro;
+            @Gyro.canceled += instance.OnGyro;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -143,6 +169,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Joystick.started -= instance.OnJoystick;
             @Joystick.performed -= instance.OnJoystick;
             @Joystick.canceled -= instance.OnJoystick;
+            @Gyro.started -= instance.OnGyro;
+            @Gyro.performed -= instance.OnGyro;
+            @Gyro.canceled -= instance.OnGyro;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -163,5 +192,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnJoystick(InputAction.CallbackContext context);
+        void OnGyro(InputAction.CallbackContext context);
     }
 }

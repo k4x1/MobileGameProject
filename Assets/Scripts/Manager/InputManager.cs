@@ -40,7 +40,9 @@ public class InputManager : MonoBehaviour
                 HandleRelativeTouchInput();
                 break;
             case InputMode.GYROSCOPE:
+/*                MovementVector = playerInput.Movement.Gyro.ReadValue<Vector3>();*/
                 HandleGyroscopeInput();
+                Debug.Log(MovementVector);
                 break;
         }
     }
@@ -59,16 +61,13 @@ public class InputManager : MonoBehaviour
             {
                 Vector2 touchDelta = touch.position - touchStartPosition;
 
-                // Determine the smaller dimension of the screen
                 float minScreenDimension = Mathf.Min(Screen.width, Screen.height);
 
-                // Scale the touch delta by the smaller screen dimension
                 Vector2 scaledDelta = new Vector2(
                     touchDelta.x / (minScreenDimension * 0.5f),
                     touchDelta.y / (minScreenDimension * 0.5f)
                 );
 
-                // Clamp each component individually to [-1, 1]
                 scaledDelta.x = Mathf.Clamp(scaledDelta.x, -1f, 1f);
                 scaledDelta.y = Mathf.Clamp(scaledDelta.y, -1f, 1f);
 
@@ -109,12 +108,14 @@ public class InputManager : MonoBehaviour
 
         Vector3 rotationEuler = rotationDifference.eulerAngles;
 
-
         float x = Mathf.Clamp((rotationEuler.x > 180 ? rotationEuler.x - 360 : rotationEuler.x) / 90f, -1f, 1f);
+        float y = Mathf.Clamp((rotationEuler.y > 180 ? rotationEuler.y - 360 : rotationEuler.y) / 90f, -1f, 1f);
         float z = Mathf.Clamp((rotationEuler.z > 180 ? rotationEuler.z - 360 : rotationEuler.z) / 90f, -1f, 1f);
 
-        MovementVector = new Vector2(z, -x);
+        MovementVector = new Vector2(z,-y); 
+      
     }
+
     public void ResetGyroscope()
     {
         gyroInitialRotation = Input.gyro.attitude;
