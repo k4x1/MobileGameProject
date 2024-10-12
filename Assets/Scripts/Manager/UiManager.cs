@@ -15,8 +15,12 @@ public class UiManager : MonoBehaviour
 {
     public static UiManager Instance { get; private set; }
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject loseMenu;
+    [SerializeField] GameObject winMenu;
     [SerializeField] GameObject joystick;
     [SerializeField] GameObject resetGyroButton;
+    [SerializeField] Timer timer;
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,7 +39,6 @@ public class UiManager : MonoBehaviour
     }
     public void SwitchInputMode(InputMode mode)
     {
-        Debug.Log("switched");
         joystick.SetActive(InputMode.JOYSTICK == mode);
         if (InputMode.GYROSCOPE == mode)
         {
@@ -57,6 +60,26 @@ public class UiManager : MonoBehaviour
     public void SetPauseMenu(bool paused)
     {
         pauseMenu.SetActive(paused);
+    }  
+    public void SetLoseMenu(bool active)
+    {
+        if (!active)
+        {
+            timer.StartTimer();
+        }
+            PauseManager.Instance.SetPaused(active);
+        loseMenu.SetActive(active);
+    } 
+    public void SetWinMenu(bool active)
+    {
+        if (!active)
+        {
+            timer.StartTimer();
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().ResetPlayer();
+        }
+        PauseManager.Instance.SetPaused(active);
+        winMenu.SetActive(active);
     }
+
 
 }

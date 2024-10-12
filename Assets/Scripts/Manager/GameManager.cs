@@ -21,18 +21,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ResetLevel() {
-        reset = true;
+    public void SetWin()
+    {
+        won = true;
     }
     public void StartGame()
     {
-        SceneManager.LoadScene("Game");
         gameStarted = true;
+        SceneManager.LoadScene("Game");
     }
     public void MainMenu()
     {
+        gameStarted = false;
         PauseManager.Instance.SetPaused(false);
         SceneManager.LoadScene("MainMenu");
-        gameStarted = false;
     }
 }

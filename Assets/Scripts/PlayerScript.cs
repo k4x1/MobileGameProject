@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()   
     {
         if(transform.position.y < -20)
         {
-            GameManager.Instance.ResetLevel();
+            UiManager.Instance.SetLoseMenu(true);
+            PauseManager.Instance.Pause();
+            ResetPlayer();
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-       GameManager.Instance.won = true;
+       UiManager.Instance.SetWinMenu(true);
+    }
+    public void ResetPlayer()
+    {
+        transform.position = new Vector3(0, 1, 0);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 }

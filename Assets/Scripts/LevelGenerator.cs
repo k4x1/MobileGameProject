@@ -36,14 +36,11 @@ public class LevelGenerator : MonoBehaviour
             GetComponent<LevelMovement>().ResetOrientation();
             GenerateLevel();
             GameManager.Instance.won = false;
+            UiManager.Instance.SetWinMenu(false);
         }
-        if(GameManager.Instance.reset)
-        {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 1, 0);   
-            GameManager.Instance.reset = false;
-        }
+   
     }
+
     void GenerateLevel() {
         offset = new Vector2(map.width/2, map.height/2);
         offset*=scale;

@@ -30,7 +30,7 @@ public class PauseManager : MonoBehaviour
     {
         if (isPaused)
         {
-            Pause(true);
+            Pause();
         }
         else
         {
@@ -50,23 +50,19 @@ public class PauseManager : MonoBehaviour
         CheckPaused();
     }
 
-    public void Pause(bool openPauseMenu)
+    public void Pause()
     {
         Time.timeScale = 0;
         Cursor.visible = true;
        
         InputManager.Instance.DisablePlayerInput();
-        if (openPauseMenu)
-        {
-            UiManager.Instance.SetPauseMenu(true);
-        }
+     
     }
 
-    private void UnPause()
+     void UnPause()
     {
         Time.timeScale = 1;
         Cursor.visible = false;
         InputManager.Instance.EnablePlayerInput();
-        UiManager.Instance.SetPauseMenu(false);
     }
 }

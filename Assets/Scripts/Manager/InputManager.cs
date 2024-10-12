@@ -112,7 +112,7 @@ public class InputManager : MonoBehaviour
         float y = Mathf.Clamp((rotationEuler.y > 180 ? rotationEuler.y - 360 : rotationEuler.y) / 90f, -1f, 1f);
         float z = Mathf.Clamp((rotationEuler.z > 180 ? rotationEuler.z - 360 : rotationEuler.z) / 90f, -1f, 1f);
 
-        MovementVector = new Vector2(z,-y); 
+        MovementVector = new Vector2(z,y); 
       
     }
 
